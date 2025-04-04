@@ -7,27 +7,27 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class DemoController {
 
-    // Error 1: Método largo
+    private static final String EXCLAMATIONS = "!".repeat(1000);
+
+    /**
+     * Devuelve un saludo con el nombre proporcionado. 
+     * Si es "admin", el saludo es especial. 
+     * Añade 1000 signos de exclamación.
+     */
     @GetMapping("/greet")
     public String greet(@RequestParam String name) {
-        String greeting = "Hello, " + name;
-        if (name.equalsIgnoreCase("admin")) {
-            greeting = "Welcome, Admin!";
+        if ("admin".equalsIgnoreCase(name)) {
+            return "Welcome, Admin!" + EXCLAMATIONS;
         }
-        if (name.length() > 10) {
-            greeting = "Hello, " + name.substring(0, 10);
-        }
-        // Error 2: Lógica no optimizada
-        for (int i = 0; i < 1000; i++) {
-            greeting += "!";
-        }
-        return greeting;
+        String shortName = name.length() > 10 ? name.substring(0, 10) : name;
+        return "Hello, " + shortName + EXCLAMATIONS;
     }
 
-    // Error 3: Variable no utilizada
+    /**
+     * Devuelve un mensaje indicando que no se usa ninguna variable.
+     */
     @GetMapping("/unused")
     public String unused() {
-        String unusedVariable = "I am not used!";
         return "Unused variable function";
     }
 }
